@@ -17,7 +17,16 @@ const MAX_WIEK = 17;
 // ?mock=blad symuluje błąd sieci przy pierwszej próbie wysłania (test przycisku "Spróbuj ponownie").
 const params = new URLSearchParams(window.location.search);
 const kodRaw = params.get("k") || "";
-const kod = /^[A-Za-z0-9_-]{1,40}$/.test(kodRaw) ? kodRaw : "";
+// Bez prawidłowego ?k= kod powstaje raz, przy otwarciu strony, i nie zmienia się przy ponawianiu wysyłki.
+const kod = /^[A-Za-z0-9_-]{1,40}$/.test(kodRaw) ? kodRaw : generujKodRodziny();
+
+// Format KB-XXXXXXXXXXXX. 32 znaki bez mylących 0, O, 1 i I; 32 dzieli 256, więc losowanie jest równomierne.
+function generujKodRodziny() {
+  const ALFABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  const bajty = new Uint8Array(12);
+  crypto.getRandomValues(bajty);
+  return "KB-" + Array.from(bajty, (b) => ALFABET[b % ALFABET.length]).join("");
+}
 const mockMode = params.get("mock");
 const isMock = mockMode === "1" || mockMode === "blad";
 let mockFailuresLeft = mockMode === "blad" ? 1 : 0;
