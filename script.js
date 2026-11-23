@@ -1,8 +1,8 @@
 // ======= JEDYNE MIEJSCE DO EDYCJI =======
 // Wklej tu Production URL webhooka z n8n, zanim opublikujesz stronę na GitHub Pages.
-const WEBHOOK_URL = "TU_WSTAW_URL";
+const WEBHOOK_URL = "https://amy145-20145.mikrus.cloud/webhook/karta-bajki";
 // Musi być identyczny jak wartość sprawdzana w node "Sekret poprawny?" w n8n.
-const SEKRET = "TU_WSTAW_SEKRET";
+const SEKRET = "815ce054dd97a8c9080ba6b4ae04a0057809f2db85aba27e88c8c5d3ba866e9a";
 // =========================================
 // Teksty zgód, wersja zgody i kontakt są w pliku config.js.
 
