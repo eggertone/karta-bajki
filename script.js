@@ -402,3 +402,4 @@ fillStaticTexts();
 updateClientNow();
 setInterval(updateClientNow, 30000);
 addChild(false);
+
