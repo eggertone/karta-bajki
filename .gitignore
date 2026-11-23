@@ -1,0 +1,8 @@
+.DS_Store
+node_modules/
+*.log
+*.md
+!README.md
+*.txt
+*.pdf
+*.json

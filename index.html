@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<meta name="referrer" content="no-referrer" />
+<meta name="format-detection" content="telephone=no" />
+<title>Karta bajki</title>
+<link rel="icon" href="data:," />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="page">
+    <noscript>
+      <p class="banner banner-error">Ta karta wymaga włączonej obsługi JavaScript w przeglądarce.</p>
+    </noscript>
+
+    <!-- ===== Widok formularza ===== -->
+    <section id="formView" class="screen">
+      <header class="intro">
+        <p class="eyebrow">Spersonalizowana bajka</p>
+        <h1>Karta bajki</h1>
+        <p>Ta karta zbiera informacje o Twoich dzieciach, dzięki którym przygotuję dla Was spersonalizowaną bajkę. Wypełnienie zajmuje około 5 minut.</p>
+        <p>Zdjęć dzieci nie dodajesz tutaj. Poproszę o nie osobno przez Messengera.</p>
+        <p class="muted">Pola oznaczone gwiazdką (<span aria-hidden="true">*</span><span class="sr-only">gwiazdka</span>) są wymagane.</p>
+      </header>
+
+      <!-- Pola nie mają atrybutu name, żeby przeglądarka nigdy nie dopisała danych do adresu URL. -->
+      <form id="kartaForm" novalidate autocomplete="off">
+        <div id="errorSummary" class="banner banner-error" role="alert" tabindex="-1" hidden></div>
+
+        <!-- 1. Dzieci -->
+        <fieldset class="card">
+          <legend><span class="step">1</span> Dzieci</legend>
+          <p class="hint">Dodaj od 1 do 5 dzieci, które mają się pojawić w bajce.</p>
+          <div id="childrenList" class="children"></div>
+          <button id="addChildBtn" class="btn btn-secondary" type="button">+ Dodaj dziecko</button>
+          <p id="childrenLimit" class="hint" hidden>Można dodać najwyżej 5 dzieci.</p>
+        </fieldset>
+
+        <!-- 2. Dodatkowe -->
+        <fieldset class="card">
+          <legend><span class="step">2</span> Dodatkowe informacje <span class="optional">(opcjonalne)</span></legend>
+          <div class="field">
+            <label for="extraZwierze">Ulubione zwierzę dzieci lub rodziny</label>
+            <input id="extraZwierze" type="text" maxlength="150" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="extraMiejsce">Miejsce, które dzieci lubią</label>
+            <input id="extraMiejsce" type="text" maxlength="150" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="extraSmieszne">Coś śmiesznego lub charakterystycznego</label>
+            <textarea id="extraSmieszne" rows="3" maxlength="500" autocomplete="off"></textarea>
+          </div>
+        </fieldset>
+
+        <!-- 3. Zgody -->
+        <fieldset class="card">
+          <legend><span class="step">3</span> Zgody</legend>
+
+          <div class="check" id="zgoda1Wrap">
+            <input id="zgoda1" type="checkbox" aria-describedby="zgoda1Error" />
+            <label for="zgoda1"><strong>Zgoda wymagana<span aria-hidden="true"> *</span></strong><span id="zgoda1Text" class="consent-text"></span></label>
+          </div>
+          <p id="zgoda1Error" class="field-error" hidden></p>
+
+          <div class="check">
+            <input id="zgoda2" type="checkbox" />
+            <label for="zgoda2"><strong>Zgoda dobrowolna</strong><span id="zgoda2Text" class="consent-text"></span><span class="hint-inline">Bez tej zgody bajka powstanie tak samo.</span></label>
+          </div>
+
+          <p id="withdrawalText" class="withdrawal"></p>
+
+          <details class="data-info">
+            <summary>Informacja o przetwarzaniu danych</summary>
+            <div class="data-info-body">
+              <p><strong>Administrator danych:</strong> Michał Eggert, kontakt: <span id="contactText"></span>.</p>
+              <p><strong>Cel:</strong> przygotowanie spersonalizowanej bajki dla Twojej rodziny, w tym ilustracji z postaciami dzieci, oraz (jeśli wyrazisz zgodę dobrowolną) pokazywanie ilustracji jako przykładu pracy.</p>
+              <p><strong>Podstawa prawna:</strong> Twoja zgoda (art. 6 ust. 1 lit. a RODO).</p>
+              <p><strong>Odbiorcy:</strong> dostawcy usług, z których korzystam przy przygotowaniu bajki: arkusz Google (przechowanie karty), hosting n8n (odebranie formularza), narzędzia AI do tekstu i ilustracji.</p>
+              <p><strong>Okres przechowywania:</strong> <span id="retentionText"></span></p>
+              <p><strong>Twoje prawa:</strong> dostęp do danych, ich sprostowanie, usunięcie, odwołanie zgody w dowolnym momencie (bez wpływu na zgodność z prawem przetwarzania przed odwołaniem) oraz skarga do Prezesa Urzędu Ochrony Danych Osobowych (UODO).</p>
+              <p><strong>Dobrowolność:</strong> podanie danych jest dobrowolne, ale bez danych i zgody wymaganej nie przygotuję bajki.</p>
+            </div>
+          </details>
+        </fieldset>
+
+        <!-- 4. Potwierdzenie -->
+        <fieldset class="card">
+          <legend><span class="step">4</span> Potwierdzenie</legend>
+
+          <div class="check" id="potwierdzenieWrap">
+            <input id="potwierdzenie" type="checkbox" aria-describedby="potwierdzenieError" />
+            <label for="potwierdzenie"><span id="potwierdzenieText"></span><span aria-hidden="true"> *</span></label>
+          </div>
+          <p id="potwierdzenieError" class="field-error" hidden></p>
+
+          <div class="field">
+            <label for="rodzicImie">Imię i nazwisko rodzica lub opiekuna<span aria-hidden="true"> *</span></label>
+            <input id="rodzicImie" type="text" maxlength="120" autocomplete="name" aria-describedby="rodzicImieHint rodzicImieError" />
+            <p id="rodzicImieHint" class="hint">Wpisanie imienia i nazwiska razem z zaznaczonymi zgodami jest Twoim potwierdzeniem. Data i godzina zostaną zapisane przez serwer w chwili wysłania.</p>
+            <p id="rodzicImieError" class="field-error" hidden></p>
+          </div>
+
+          <p class="muted">Teraz na Twoim urządzeniu: <span id="clientNow"></span> (tylko informacyjnie). Wersja zgody: <span class="version-text"></span>.</p>
+
+          <!-- Pułapka na boty: ukryta dla ludzi, musi zostać pusta. -->
+          <div class="hp" aria-hidden="true">
+            <label for="polePulapka">Nie wypełniaj tego pola</label>
+            <input id="polePulapka" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+        </fieldset>
+
+        <div id="sendError" class="banner banner-error" role="alert" hidden>
+          <p>Nie udało się wysłać karty. Sprawdź połączenie z internetem. Wpisane dane zostały na stronie.</p>
+          <button id="retryBtn" class="btn btn-secondary" type="button">Spróbuj ponownie</button>
+        </div>
+
+        <button id="submitBtn" class="btn btn-primary btn-block" type="submit">Wyślij kartę</button>
+        <p id="mockBadge" class="mock-badge" hidden>Tryb testowy: nic nie jest wysyłane do serwera.</p>
+      </form>
+    </section>
+
+    <!-- ===== Widok potwierdzenia (także kopia do druku / PDF) ===== -->
+    <section id="doneView" class="screen" hidden>
+      <header class="intro">
+        <p class="eyebrow no-print">Gotowe</p>
+        <h1 id="doneHeading" tabindex="-1">Dziękuję, karta została wysłana</h1>
+        <p class="no-print">Poniżej podsumowanie Twoich odpowiedzi. Możesz zapisać kopię jako PDF.</p>
+        <p class="print-only">Kopia karty bajki z potwierdzeniem zgód.</p>
+      </header>
+
+      <div class="card">
+        <h2>Potwierdzenie</h2>
+        <dl class="summary">
+          <dt>Rodzic lub opiekun</dt><dd id="sumRodzic"></dd>
+          <dt>Data i godzina (zegar urządzenia)</dt><dd id="sumData"></dd>
+          <dt>Wersja zgody</dt><dd class="version-text"></dd>
+          <dt>Kod rodziny</dt><dd id="sumKod"></dd>
+        </dl>
+      </div>
+
+      <div class="card">
+        <h2>Dzieci</h2>
+        <ol id="sumDzieci" class="summary-list"></ol>
+      </div>
+
+      <div class="card">
+        <h2>Dodatkowe informacje</h2>
+        <dl id="sumDodatkowe" class="summary"></dl>
+      </div>
+
+      <div class="card">
+        <h2>Zgody</h2>
+        <p><strong id="sumZgoda1"></strong></p>
+        <p id="sumZgoda1Text" class="consent-text"></p>
+        <p><strong id="sumZgoda2"></strong></p>
+        <p id="sumZgoda2Text" class="consent-text"></p>
+        <p><strong id="sumPotwierdzenie"></strong></p>
+        <p id="sumWithdrawal" class="withdrawal"></p>
+        <p id="sumRetention" class="consent-text"></p>
+      </div>
+
+      <button id="printBtn" class="btn btn-primary btn-block no-print" type="button">Zapisz kopię (PDF)</button>
+      <p class="hint no-print">Na telefonie wybierz w oknie drukowania opcję „Zapisz jako PDF”.</p>
+    </section>
+  </main>
+
+  <template id="childTemplate">
+    <div class="child" role="group">
+      <div class="child-head">
+        <h3 class="child-title"></h3>
+        <button class="btn-remove" type="button">Usuń</button>
+      </div>
+      <div class="field">
+        <label data-for="imie">Imię<span aria-hidden="true"> *</span></label>
+        <input data-field="imie" type="text" maxlength="50" autocomplete="off" />
+        <p class="field-error" data-error="imie" hidden></p>
+      </div>
+      <div class="field field-short">
+        <label data-for="wiek">Wiek (lata)<span aria-hidden="true"> *</span></label>
+        <input data-field="wiek" type="text" inputmode="numeric" maxlength="2" autocomplete="off" />
+        <p class="field-error" data-error="wiek" hidden></p>
+      </div>
+      <div class="field">
+        <label data-for="co_lubi">Co lubi</label>
+        <textarea data-field="co_lubi" rows="2" maxlength="300" autocomplete="off"></textarea>
+      </div>
+      <div class="field">
+        <label data-for="ulubiona_zabawka">Ulubiona zabawka</label>
+        <input data-field="ulubiona_zabawka" type="text" maxlength="100" autocomplete="off" />
+      </div>
+    </div>
+  </template>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
