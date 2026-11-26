@@ -279,6 +279,12 @@ textarea:focus {
   font-size: 15px;
 }
 
+/* Opis pod etykietą pola w bloku dziecka: zwykła, nie pogrubiona czcionka. */
+.child label .hint-inline {
+  margin-top: 2px;
+  font-weight: 400;
+}
+
 .withdrawal {
   margin: 16px 0;
   padding: 12px 14px;
