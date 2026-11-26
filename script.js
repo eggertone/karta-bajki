@@ -168,7 +168,8 @@ function readChild(row) {
     imie: value("imie"),
     wiek: value("wiek"),
     co_lubi: value("co_lubi"),
-    ulubiona_zabawka: value("ulubiona_zabawka")
+    ulubiona_zabawka: value("ulubiona_zabawka"),
+    ulubiona_maskotka: value("ulubiona_maskotka")
   };
 }
 
@@ -354,6 +355,7 @@ function showDone(payload, sentAt) {
     addSummaryRow(dl, "Wiek", String(child.wiek));
     addSummaryRow(dl, "Co lubi", child.co_lubi);
     addSummaryRow(dl, "Ulubiona zabawka", child.ulubiona_zabawka);
+    addSummaryRow(dl, "Opis maskotki lub zabawki", child.ulubiona_maskotka);
     item.appendChild(dl);
     list.appendChild(item);
   });
